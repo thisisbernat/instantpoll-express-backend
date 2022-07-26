@@ -4,9 +4,10 @@ const { Schema, model } = mongoose
 const questionSchema = new Schema({
     title: String,
     position: Number,
-    type: { type: String, enum: ["intro", "single", "multiple", "rating", "open", "ranking", "list", 'thanks'] },
-    choices: [String],
-    openType: { type: String, enum: ["single-line", "paragraph", "number", "word", "date", "email", "phone"] },
+    type: { type: String, enum: ["intro", "single", "multiple", "rating", "open", "ranking", "list", "thanks", "line", "paragraph", "number", "date", "email", "phone"] },
+    options: [String],
+    message: String,
+    buttonText: String,
     ranking: [String],
     parentPoll: { type: Schema.Types.ObjectId, ref: "Poll" },
     isCompulsory: Boolean,

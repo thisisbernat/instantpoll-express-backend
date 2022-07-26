@@ -13,7 +13,7 @@ router.get("/polls", (req, res, next) => {
         .catch(err => console.log(err))
 })
 
-// GET POLL
+// GET ONE POLL
 router.get("/polls/:id", (req, res, next) => {
     Poll.findById(req.params.id)
         .then(poll => {
@@ -22,7 +22,7 @@ router.get("/polls/:id", (req, res, next) => {
         .catch(err => console.log(err))
 })
 
-// POST POLL
+// ADD NEW POLL
 router.post("/polls", (req, res, next) => {
     Poll.create(req.body)
         .then(newPoll => {
@@ -31,7 +31,7 @@ router.post("/polls", (req, res, next) => {
         .catch(err => console.log(err))
 })
 
-// PUT POLL
+// UPDATE POLL
 router.put('/polls/:id', (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         res.status(400).json({ message: 'Specified id is not valid' });

@@ -2,8 +2,7 @@ const mongoose = require("mongoose")
 const { Schema, model } = mongoose
 
 const pollSchema = new Schema({
-    name: String,
-    isOpen: Boolean,
+    title: String,
     isPublished: Boolean,
     isPublic: Boolean,
     questions: [{ type: Schema.Types.ObjectId, ref: "Question" }],
