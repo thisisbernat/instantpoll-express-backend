@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const Question = require('../models/Question.model')
 const Poll = require('../models/Poll.model')
 
-// GET ALL QUESTIONS
+// GET ALL QUESTIONS BY POLL
 router.get("/questions/:pollId", async (req, res, next) => {
     try {
         const poll = await Poll.findById(req.params.pollId)
@@ -24,14 +24,14 @@ router.get("/questions/:pollId", async (req, res, next) => {
     } catch (err) { console.log(err) }
 })
 
-// GET QUESTION
-router.get("/questions/:id", (req, res, next) => {
-    Question.findById(req.params.id)
-        .then(question => {
-            res.json(question)
-        })
-        .catch(err => console.log(err))
-})
+// // GET QUESTION
+// router.get("/questions/:id", (req, res, next) => {
+//     Question.findById(req.params.id)
+//         .then(question => {
+//             res.json(question)
+//         })
+//         .catch(err => console.log(err))
+// })
 
 // POST QUESTION
 router.post("/questions", (req, res, next) => {

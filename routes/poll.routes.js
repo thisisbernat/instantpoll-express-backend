@@ -15,14 +15,14 @@ router.get("/polls/:userId", (req, res, next) => {
         .catch(err => console.log(err))
 })
 
-// GET ONE POLL
-router.get("/polls/:id", (req, res, next) => {
-    Poll.findById(req.params.id)
-        .then(poll => {
-            res.json(poll)
-        })
-        .catch(err => console.log(err))
-})
+// // GET ONE POLL
+// router.get("/polls/:id", (req, res, next) => {
+//     Poll.findById(req.params.id)
+//         .then(poll => {
+//             res.json(poll)
+//         })
+//         .catch(err => console.log(err))
+// })
 
 // ADD NEW POLL
 router.post("/polls", (req, res, next) => {
