@@ -3,14 +3,25 @@ const router = express.Router()
 const mongoose = require('mongoose')
 
 const Question = require('../models/Question.model')
+const Poll = require('../models/Poll.model')
 
 // GET ALL QUESTIONS
-router.get("/questions/:pollId", (req, res, next) => {
-    Question.find({ parentPoll: req.params.pollId })
-        .then(questions => {
+router.get("/questions/:pollId", async (req, res, next) => {
+    try {
+        const poll = await Poll.findById(req.params.pollId)
+        if (poll.isPublished) {
+            const questions = await Question.find({ parentPoll: req.params.pollId })
             res.json(questions)
-        })
-        .catch(err => console.log(err))
+        } else if (!poll.isPublished) {
+            res.json([{
+                title: 'This poll is not published right now 😢',
+                type: 'intro',
+                message: 'Please, come back another time',
+                buttonText: 'ok'
+            }])
+        }
+
+    } catch (err) { console.log(err) }
 })
 
 // GET QUESTION
@@ -51,10 +62,10 @@ router.delete('/questions/:id', (req, res, next) => {
         res.status(400).json({ message: 'Specified id is not valid' });
         return;
     }
-   
+
     Question.findByIdAndRemove(req.params.id)
-      .then(() => res.json({ message: `Question with ID ${req.params.id} has been removed successfully.` }))
-      .catch(error => res.json(error));
-  })
+        .then(() => res.json({ message: `Question with ID ${req.params.id} has been removed successfully.` }))
+        .catch(error => res.json(error));
+})
 
 module.exports = router;
