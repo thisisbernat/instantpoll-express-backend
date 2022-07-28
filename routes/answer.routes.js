@@ -5,8 +5,8 @@ const mongoose = require('mongoose')
 const Answer = require('../models/Answer.model')
 
 // GET ALL QUESTIONS
-router.get("/answers", (req, res, next) => {
-    Answer.find()
+router.get("/answers/:pollId", (req, res, next) => {
+    Answer.find({ parentQuestion: req.params.userId })
         .then(answers => {
             res.json(answers)
         })
