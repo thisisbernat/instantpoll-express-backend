@@ -9,6 +9,7 @@ const questionSchema = new Schema({
     message: String,
     buttonText: String,
     ranking: [String],
+    listNumber: Number,
     parentPoll: { type: Schema.Types.ObjectId, ref: "Poll" },
     isCompulsory: Boolean,
     answers: [{ type: Schema.Types.ObjectId, ref: "Answer" }]
