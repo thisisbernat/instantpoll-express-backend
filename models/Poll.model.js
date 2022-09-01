@@ -9,7 +9,7 @@ const pollSchema = new Schema({
     participantEmails: [{ type: String, lowercase: true, trim: true }],
     duplicationCheck: { type: String, enum: ["none", "session", "ip"] },
     submissions: Number,
-    views: Number,
+    views: [String],
     owner: { type: Schema.Types.ObjectId, ref: "User" }
 },
     { timestamps: true }

@@ -22,7 +22,7 @@ const authRouter = require("./routes/auth.routes");
 app.use("/api/auth", authRouter);
 
 const pollRouter = require("./routes/poll.routes");
-app.use("/api",isAuthenticated, pollRouter);       
+app.use("/api", isAuthenticated, pollRouter);
 
 const questionRouter = require("./routes/question.routes");
 app.use("/api",isAuthenticated, questionRouter);      
