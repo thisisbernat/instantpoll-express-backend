@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 
 const Answer = require('../models/Answer.model')
 
-// GET ALL QUESTIONS
+// GET ALL ANSWERS
 router.get("/answers/", (req, res, next) => {
     Answer.find()
         .then(answers => {
@@ -13,7 +13,7 @@ router.get("/answers/", (req, res, next) => {
         .catch(err => console.log(err))
 })
 
-//GET QUESTION
+//GET ANSWER
 router.get("/answers/:id", (req, res, next) => {
     Answer.findById(req.params.id)
         .then(answer => {
@@ -22,7 +22,7 @@ router.get("/answers/:id", (req, res, next) => {
         .catch(err => console.log(err))
 })
 
-// POST QUESTION
+// POST ANSWER
 router.post("/answers", (req, res, next) => {
     Answer.create(req.body)
         .then(newAnswer => {
@@ -31,7 +31,7 @@ router.post("/answers", (req, res, next) => {
         .catch(err => console.log(err))
 })
 
-// PUT QUESTION
+// PUT ANSWER
 router.put('/answers/:id', (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         res.status(400).json({ message: 'Specified id is not valid' });
@@ -45,7 +45,7 @@ router.put('/answers/:id', (req, res, next) => {
         .catch(error => res.json(error));
 })
 
-// DELETE QUESTION
+// DELETE ANSWER
 router.delete('/answers/:id', (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         res.status(400).json({ message: 'Specified id is not valid' });
