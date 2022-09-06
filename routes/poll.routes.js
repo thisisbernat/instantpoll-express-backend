@@ -131,4 +131,23 @@ router.delete('/polls/:id', async (req, res, next) => {
     }
 })
 
+// GET ALL QUESTIONS BY POLL
+router.get("/polls/:pollId/questions", async (req, res, next) => {
+    try {
+        const poll = await Poll.findById(req.params.pollId)
+        if (poll.isPublished) {
+            const questions = await Question.find({ parentPoll: req.params.pollId })
+            res.json(questions)
+        } else if (!poll.isPublished) {
+            res.json([{
+                title: 'This poll is not published right now 😢',
+                type: 'intro',
+                message: 'Please, come back another time',
+                buttonText: 'ok'
+            }])
+        }
+
+    } catch (err) { console.log(err) }
+})
+
 module.exports = router;
