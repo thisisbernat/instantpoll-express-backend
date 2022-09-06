@@ -22,16 +22,13 @@ const authRouter = require("./routes/auth.routes");
 app.use("/api/auth", authRouter);
 
 const pollRouter = require("./routes/poll.routes");
-// app.use("/api", isAuthenticated, pollRouter);
-app.use("/api", pollRouter);
+app.use("/api", isAuthenticated, pollRouter);
 
 const questionRouter = require("./routes/question.routes");
-// app.use("/api",isAuthenticated, questionRouter);
-app.use("/api", questionRouter); 
+app.use("/api",isAuthenticated, questionRouter);
 
 const answerRouter = require("./routes/answer.routes");
-// app.use("/api",isAuthenticated, answerRouter);
-app.use("/api", answerRouter);   
+app.use("/api",isAuthenticated, answerRouter);
 
 
 
