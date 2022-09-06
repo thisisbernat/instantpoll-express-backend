@@ -1,10 +1,34 @@
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
+const { Parser } = require("json2csv")
+const fs = require("fs")
 
 const Poll = require('../models/Poll.model')
 const Question = require('../models/Question.model')
 const Answer = require('../models/Answer.model')
+
+const jsonExample = [
+    {
+        "Country": "Brazil",
+        "Population": "209m",
+        "Continent": "South America",
+        "Official language": "Portuguese",
+        "test1": "value"
+    },
+    {
+        "Country": "Québec",
+        "Population": "8.5m",
+        "Continent": "North America",
+        "Official language": "French"
+    },
+    {
+        "Country": "Catalunya",
+        "Population": "7.5m",
+        "Continent": "Europa",
+        "Official language": "Catalan"
+    }
+]
 
 // GET ALL POLLS
 router.get("/polls/:userId", (req, res, next) => {
@@ -21,6 +45,13 @@ router.get("/polls/:userId", (req, res, next) => {
             res.json(updatedPolls)
         })
         .catch(err => console.log(err))
+})
+
+// GET POLL IN CSV
+router.get("/polls/csv/:id", async (req, res, next) => {
+    const json2csvParser = new Parser()
+    const csv = json2csvParser.parse(jsonExample)
+    res.status(200).send(csv)
 })
 
 // GET POLL STATUS
