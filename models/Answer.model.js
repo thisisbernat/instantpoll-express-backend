@@ -12,7 +12,8 @@ const answerSchema = new Schema({
     email: String,
     phone: String,
     replierEmail: String,
-    parentQuestion: { type: Schema.Types.ObjectId, ref: "Question" }    
+    parentQuestion: { type: Schema.Types.ObjectId, ref: "Question" },
+    submissionId: String 
 },
     { timestamps: true }
 )
