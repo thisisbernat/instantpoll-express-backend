@@ -34,20 +34,6 @@ router.get("/polls/status/:id", async (req, res, next) => {
   }
 })
 
-// // ADD SUBMISSION TO POLL
-// router.post('/polls/submissions/:id/', (req, res, next) => {
-//   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-//       res.status(400).json({ message: 'Specified id is not valid' });
-//       return;
-//   }
-//   console.log(req.body)
-//   Poll.findByIdAndUpdate(req.params.id, req.body, { new: true })
-//       .then((updatedPoll) => {
-//           res.json(updatedPoll)
-//       })
-//       .catch(error => res.json(error));
-// })
-
 // GET ALL QUESTIONS BY POLL
 router.get("/questions/:pollId", async (req, res, next) => {
   try {
@@ -86,8 +72,8 @@ router.post("/polls/views/:id", async (req, res, next) => {
   }
 })
 
-// ADD SUBMISSION TO POLL 2
-router.post("/polls/subs/:id", async (req, res, next) => {
+// ADD SUBMISSION TO POLL
+router.post("/polls/submissions/:id", async (req, res, next) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       res.status(400).json({ message: 'Specified id is not valid' });
       return;
