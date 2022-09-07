@@ -23,12 +23,13 @@ router.get("/answers/:id", (req, res, next) => {
 })
 
 // POST ANSWER
-router.post("/answers", (req, res, next) => {
-    Answer.create(req.body)
-        .then(newAnswer => {
-            res.json(newAnswer)
-        })
-        .catch(err => console.log(err))
+router.post("/answers", async (req, res, next) => {
+    try {
+        const newAnswer = await Answer.create(req.body)
+        res.json(newAnswer)
+    } catch(err) {
+        console.log(err)
+    }
 })
 
 // PUT ANSWER
