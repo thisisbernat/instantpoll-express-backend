@@ -17,6 +17,9 @@ app.use("/api", allRoutes);
 const authRouter = require("./routes/auth.routes");
 app.use("/api/auth", authRouter);
 
+const publicRouter = require("./routes/public.routes");
+app.use("/api/public", publicRouter);
+
 const pollRouter = require("./routes/poll.routes");
 app.use("/api", isAuthenticated, pollRouter);
 
@@ -25,6 +28,8 @@ app.use("/api", isAuthenticated, questionRouter);
 
 const answerRouter = require("./routes/answer.routes");
 app.use("/api", isAuthenticated, answerRouter);
+
+
 
 // app.use((req, res, next) => {
 //     // If no routes match, send them the React HTML.
