@@ -8,8 +8,8 @@ const pollSchema = new Schema({
     questions: [{ type: Schema.Types.ObjectId, ref: "Question" }],
     participantEmails: [{ type: String, lowercase: true, trim: true }],
     duplicationCheck: { type: String, enum: ["none", "session", "ip"] },
-    submissions: Number,
-    views: [String],
+    submissionsIds: [String],
+    viewsIds: [String],
     owner: { type: Schema.Types.ObjectId, ref: "User" }
 },
     { timestamps: true }

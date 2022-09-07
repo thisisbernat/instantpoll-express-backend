@@ -14,7 +14,6 @@ const jsonExample = [
         "Population": "209m",
         "Continent": "South America",
         "Official language": "Portuguese",
-        "test1": "value"
     },
     {
         "Country": "Québec",
@@ -36,10 +35,11 @@ router.get("/polls/:userId", (req, res, next) => {
         .then(polls => {
             const updatedPolls = []
             polls.forEach(poll => {
-                const viewsArray = poll.views.length
                 const pollCopy = { ...poll._doc }
-                delete pollCopy['views']
-                pollCopy.views = viewsArray
+                pollCopy.submissions = poll.submissionsIds.length
+                pollCopy.views = poll.viewsIds.length
+                delete pollCopy['viewsIds']
+                delete pollCopy['submissionsIds']
                 updatedPolls.push(pollCopy)
             })
             res.json(updatedPolls)
@@ -60,7 +60,7 @@ router.get("/polls/status/:id", async (req, res, next) => {
         const poll = await Poll.findById(req.params.id)
         const response = {
             _id: poll._id,
-            views: poll.views.length,
+            viewsIds: poll.viewsIds.length,
             submissions: poll.submissions,
             isPublic: poll.isPublic,
             isPublished: poll.isPublished,

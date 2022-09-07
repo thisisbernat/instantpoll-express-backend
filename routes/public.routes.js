@@ -21,8 +21,8 @@ router.get("/polls/status/:id", async (req, res, next) => {
       const poll = await Poll.findById(req.params.id)
       const response = {
           _id: poll._id,
-          views: poll.views.length,
-          submissions: poll.submissions,
+          views: poll.viewsIds.length,
+          submissions: poll.submissionsIds.length,
           isPublic: poll.isPublic,
           isPublished: poll.isPublished,
           createdAt: poll.createdAt,
@@ -34,19 +34,19 @@ router.get("/polls/status/:id", async (req, res, next) => {
   }
 })
 
-// UPDATE POLL (PATCH - ONLY CHANGES)
-router.patch('/polls/:id', (req, res, next) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      res.status(400).json({ message: 'Specified id is not valid' });
-      return;
-  }
-
-  Poll.findByIdAndUpdate(req.params.id, req.body, { new: true })
-      .then((updatedPoll) => {
-          res.json(updatedPoll)
-      })
-      .catch(error => res.json(error));
-})
+// // ADD SUBMISSION TO POLL
+// router.post('/polls/submissions/:id/', (req, res, next) => {
+//   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+//       res.status(400).json({ message: 'Specified id is not valid' });
+//       return;
+//   }
+//   console.log(req.body)
+//   Poll.findByIdAndUpdate(req.params.id, req.body, { new: true })
+//       .then((updatedPoll) => {
+//           res.json(updatedPoll)
+//       })
+//       .catch(error => res.json(error));
+// })
 
 // GET ALL QUESTIONS BY POLL
 router.get("/questions/:pollId", async (req, res, next) => {
@@ -56,7 +56,6 @@ router.get("/questions/:pollId", async (req, res, next) => {
           const questions = await Question.find({ parentPoll: req.params.pollId })
           res.json(questions)
       } else if (!poll.isPublished) {
-          l
           res.json([{
               title: 'This poll is not published right now 😢',
               type: 'intro',
@@ -76,9 +75,28 @@ router.post("/polls/views/:id", async (req, res, next) => {
   }
   try {
       const poll = await Poll.findById(req.params.id)
-      if (!poll.views.includes(req.body.visitId)) {
-          const viewsArray = [...poll.views, req.body.visitId]
-          const updatedPoll = await Poll.findByIdAndUpdate(req.params.id, { views: viewsArray }, { new: true })
+      if (!poll.viewsIds.includes(req.body.visitId)) {
+          const viewsArray = [...poll.viewsIds, req.body.visitId]
+          const updatedPoll = await Poll.findByIdAndUpdate(req.params.id, { viewsIds: viewsArray }, { new: true })
+          res.json(updatedPoll)
+      }
+      res.json('visit ID already registered')
+  } catch (error) {
+      console.log(error)
+  }
+})
+
+// ADD SUBMISSION TO POLL 2
+router.post("/polls/subs/:id", async (req, res, next) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      res.status(400).json({ message: 'Specified id is not valid' });
+      return;
+  }
+  try {
+      const poll = await Poll.findById(req.params.id)
+      if (!poll.submissionsIds.includes(req.body.submissionId)) {
+          const viewsArray = [...poll.submissionsIds, req.body.submissionId]
+          const updatedPoll = await Poll.findByIdAndUpdate(req.params.id, { submissionsIds: viewsArray }, { new: true })
           res.json(updatedPoll)
       }
       res.json('visit ID already registered')
