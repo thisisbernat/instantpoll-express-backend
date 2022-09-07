@@ -3,31 +3,11 @@ const router = express.Router()
 const mongoose = require('mongoose')
 const { Parser } = require("json2csv")
 const fs = require("fs")
+const submissionCleaner = require('../utils/utils.js')
 
 const Poll = require('../models/Poll.model')
 const Question = require('../models/Question.model')
 const Answer = require('../models/Answer.model')
-
-const jsonExample = [
-    {
-        "Country": "Brazil",
-        "Population": "209m",
-        "Continent": "South America",
-        "Official language": "Portuguese",
-    },
-    {
-        "Country": "Québec",
-        "Population": "8.5m",
-        "Continent": "North America",
-        "Official language": "French"
-    },
-    {
-        "Country": "Catalunya",
-        "Population": "7.5m",
-        "Continent": "Europa",
-        "Official language": "Catalan"
-    }
-]
 
 // GET ALL POLLS
 router.get("/polls/:userId", (req, res, next) => {
@@ -47,11 +27,43 @@ router.get("/polls/:userId", (req, res, next) => {
         .catch(err => console.log(err))
 })
 
-// GET POLL IN CSV
+// GET POLL IN CSV - TEST
 router.get("/polls/csv/:id", async (req, res, next) => {
-    const json2csvParser = new Parser()
-    const csv = json2csvParser.parse(jsonExample)
-    res.status(200).send(csv)
+    try {
+        const poll = await Poll.findById(req.params.id)
+        const { questions } = await Poll.findById(req.params.id).populate('questions')
+        const questionsObject = {}
+        questions.forEach(question => questionsObject[question._id] = question)
+        const { submissionsIds, questions: questionsIds } = poll
+        const responseArray = []
+        for (let i = 0; i < submissionsIds.length; i++) {
+            let response = {}
+            const submission = await Answer.find({ submissionId: submissionsIds[i] })
+            const submissionCopy = []
+            submission.forEach((element, index) => {
+                if (questionsIds.includes(element.parentQuestion)) {
+                    let elementCopy = { ...element._doc }
+                    elementCopy['type'] = questionsObject[elementCopy.parentQuestion]['type']
+                    elementCopy['questionTitle'] = questionsObject[elementCopy.parentQuestion]['title']
+                    const cleanElement = submissionCleaner(elementCopy)
+                    submissionCopy.push(cleanElement)
+                }
+            })
+            response['timeStamp'] = submission[0].createdAt
+            response['userEmail'] = submission[0].replierEmail
+            submissionCopy.forEach(sub => {
+                const [key] = Object.keys(sub)
+                response[key] = sub[key]
+            })
+            responseArray.push(response)
+        }
+        // res.status(200).json(responseArray)
+        const json2csvParser = new Parser()
+        const csv = json2csvParser.parse(responseArray)
+        res.status(200).send(csv)
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 // GET POLL STATUS
