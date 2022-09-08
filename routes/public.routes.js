@@ -23,6 +23,7 @@ router.get("/polls/status/:id", async (req, res, next) => {
           _id: poll._id,
           views: poll.viewsIds.length,
           submissions: poll.submissionsIds.length,
+          submissionsIds: poll.submissionsIds,
           isPublic: poll.isPublic,
           isPublished: poll.isPublished,
           createdAt: poll.createdAt,
